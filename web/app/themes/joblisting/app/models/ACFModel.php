@@ -29,6 +29,15 @@ Class ACFModel {
         return $application->post_title;
     }
 
+    public function get_category() {
+        $categories = get_the_category($this->id);
+        if (!empty($categories)) {
+            return $categories[0]->name;
+        }
+        return 'Uncategorized'; // Fallback if no category is set
+    }
+
+
     public function get_id() {
         return $this->get_post()->ID;
     }

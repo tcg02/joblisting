@@ -6,7 +6,7 @@ class JobPostRestController extends WP_REST_Controller {
 
     // Here initialize our namespace and resource name.
     public function __construct() {
-        $this->namespace     = 'joblosting/v1';
+        $this->namespace     = 'joblisting/v1';
         $this->resource_name = 'jobpost';
     }
 
@@ -73,10 +73,12 @@ class JobPostRestController extends WP_REST_Controller {
     public function get_job_posts( $request ) {
         $filters = $request['filters'];
 
+        $job_posts = JobPost::getResults($filters);
+
         return [
-            'success' => $success, 
+            'success' => !empty($job_posts ? true : false), 
             'message' => ($success ? 'Job Posts retrieved':'Job Posts could not be retrieved'),
-            'data'    => $rfi_display_meta['rfi_discussion']
+            'data'    => $job_posts
         ];
     }
 

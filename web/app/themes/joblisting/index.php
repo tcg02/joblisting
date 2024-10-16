@@ -11,10 +11,10 @@
 			<div class="breadcrumb-section">
 				<!-- breadcrumb -->
 				<ol class="breadcrumb">
-					<li><a href="index.html">Home</a></li>
-					<li>Engineer/Architects</li>
+					<li><a href="<?= get_home_url(); ?>">Home</a></li>
+					<li>Technical</li>
 				</ol><!-- breadcrumb -->						
-				<h2 class="title">Software Engineer</h2>
+				<h2 class="title">Engineers & Architects</h2>
 			</div>
 
 			<div id="app">

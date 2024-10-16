@@ -29,6 +29,22 @@ Class JobPostController {
      * @return Array
      */
     public function show() {
-        //
+        $job_post = new JobPost($this->post_id);
+
+        return [
+            'job_post' => $job_post
+        ];
+    }
+
+    /**
+     * create a new job post.
+     *
+     * @return Array
+     */
+    public function create() {
+        
+        return [
+            //
+        ];
     }
 }

@@ -2,7 +2,7 @@
     <div class="col-sm-8 col-md-9">				
         <div class="section job-list-item">
             <div class="featured-top">
-                <h4>Showing 1-25 of 65,712 ads</h4>
+                <h4>Showing x of y ads</h4>
                 <div class="dropdown pull-right">
                     <div class="dropdown category-dropdown">
                         <h5>Sort by:</h5>						
@@ -15,21 +15,16 @@
                 </div>							
             </div><!-- featured-top -->	
 
-            <div class="job-ad-item">
+            <div v-for="job in job_posts" :key="job.id" class="job-ad-item">
                 <div class="item-info">
-                    <div class="item-image-box">
-                        <div class="item-image">
-                            <a href="job-details.html"><img src="<?= get_template_directory_uri(); ?>/dist/images/job/1.png" alt="Image" class="img-responsive"></a>
-                        </div><!-- item-image -->
-                    </div>
-
                     <div class="ad-info">
-                        <span><a href="job-details.html" class="title">Project Manager</a> @ <a href="#">Dominos Pizza</a></span>
+                        <span><a :href="job.permalink" class="title">{{ job.title }}</a> @ <a href="#">{{ job.company }}</a></span>
                         <div class="ad-meta">
                             <ul>
-                                <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>San Francisco, CA, US </a></li>
-                                <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>
-                                <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li>
+                                <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.location }}</a></li>
+                                <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>{{ job.employment_type }}</a></li>
+                                <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>{{ job.salary }}</a></li>
+                                <li><a href="#"><i class="fa fa-briefcase" aria-hidden="true"></i>{{ job.experience_level }}</a></li>
                             </ul>
                         </div><!-- ad-meta -->									
                     </div><!-- ad-info -->
@@ -55,3 +50,9 @@
         </div>
     </div>
 </template>
+
+<script>
+    export default {
+        props: ['job_posts'],
+    }
+</script>

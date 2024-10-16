@@ -1,7 +1,7 @@
 <template>
     <div class="banner-form banner-form-full job-list-form">
-        <form action="#">
-            <!-- category-change -->
+        <form @submit.prevent="handleSearch">
+            <!-- Static Category -->
             <div class="dropdown category-dropdown">						
                 <a data-toggle="dropdown" href="#"><span class="change-text">Job Category</span> <i class="fa fa-angle-down"></i></a>
                 <ul class="dropdown-menu category-change">
@@ -13,7 +13,7 @@
                 </ul>								
             </div><!-- category-change -->
             
-            <!-- language-dropdown -->
+            <!-- Static Location -->
             <div class="dropdown category-dropdown language-dropdown">
                 <a data-toggle="dropdown" href="#"><span class="change-text">Job Location</span> <i class="fa fa-angle-down"></i></a>
                 <ul class="dropdown-menu category-change language-change">
@@ -23,8 +23,27 @@
                 </ul>								
             </div><!-- language-dropdown -->
         
-            <input type="text" class="form-control" placeholder="Type your key word">
+            <!-- Input for search keyword -->
+            <input v-model="keyword" type="text" class="form-control" placeholder="Type your keyword">
             <button type="submit" class="btn btn-primary" value="Search">Search</button>
         </form>
     </div><!-- banner-form -->
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            keyword: ''
+        };
+    },
+    methods: {
+        handleSearch() {
+            // Emit only the search keyword
+            this.$emit('search', {
+                keyword: this.keyword
+            });
+        }
+    }
+};
+</script>

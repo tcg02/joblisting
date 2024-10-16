@@ -19,7 +19,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html"><img class="img-responsive" src="<?= get_template_directory_uri(); ?>/dist/images/logo.png" alt="Logo"></a>
+				<a class="navbar-brand" href="<?= get_home_url(); ?>"><img class="img-responsive" src="<?= get_template_directory_uri(); ?>/dist/images/logo.png" alt="Logo"></a>
 			</div>
 			<!-- /navbar-header -->
 			
@@ -33,8 +33,9 @@
 			</div><!-- navbar-left -->
 			
 			<!-- nav-right -->
-			<div class="nav-right">			
-				<a href="post.html" class="btn">Post Your Job</a>
+			<div class="nav-right">
+				<!-- TODO: comes from the page template you'll create. See create-post.php -->
+				<a href="<?= home_url('/create'); ?>" class="btn">Post Your Job</a>
 			</div>
 			<!-- nav-right -->
 		</div><!-- container -->

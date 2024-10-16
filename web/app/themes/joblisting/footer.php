@@ -3,7 +3,7 @@
 		
 		<div class="footer-bottom clearfix text-center">
 			<div class="container">
-				<p>Copyright &copy; <a href="#">Jobs</a>. Developed by <a href="http://themeregion.com/">ThemeRegion</a></p>
+				<p>Copyright &copy; <?= date('Y'); ?> <a href="#">Jobs</a>.</p>
 			</div>
 		</div><!-- footer-bottom -->
 	</footer><!-- footer -->
