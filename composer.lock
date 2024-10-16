@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d5f03fd7f1547fb231ecefea53fa659",
+    "content-hash": "1c0775fccf60a8f7446bd57168fb3003",
     "packages": [
         {
             "name": "composer/installers",
@@ -782,6 +782,34 @@
                 }
             ],
             "time": "2024-09-10T23:11:22+00:00"
+        },
+        {
+            "name": "schoonerstrategies/job-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ssiegelschooner/job-generator.git",
+                "reference": "8b1184fd373b6016ebac99d7ee9856ed809fe238"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ssiegelschooner/job-generator/zipball/8b1184fd373b6016ebac99d7ee9856ed809fe238",
+                "reference": "8b1184fd373b6016ebac99d7ee9856ed809fe238",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "wordpress-plugin",
+            "authors": [
+                {
+                    "name": "Schooner Strategies",
+                    "email": "ssiegel@schoonerstrategies.com"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/ssiegelschooner/job-generator/tree/master",
+                "issues": "https://github.com/ssiegelschooner/job-generator/issues"
+            },
+            "time": "2024-10-16T00:22:15+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2060,6 +2088,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "schoonerstrategies/job-generator": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,

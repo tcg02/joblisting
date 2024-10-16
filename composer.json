@@ -28,6 +28,10 @@
       "type": "composer",
       "url": "https://wpackagist.org",
       "only": ["wpackagist-plugin/*", "wpackagist-theme/*"]
+    },
+    {
+    "type": "vcs",
+    "url": "https://github.com/ssiegelschooner/job-generator"
     }
   ],
   "require": {
@@ -41,7 +45,8 @@
     "roots/wp-config": "1.0.0",
     "roots/wp-password-bcrypt": "1.2.0",
     "wpackagist-theme/twentytwentyfour": "^1.0",
-    "wpackagist-plugin/advanced-custom-fields": "6.3.6.2"
+    "wpackagist-plugin/advanced-custom-fields": "6.3.6.2",
+    "schoonerstrategies/job-generator": "dev-master"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.7.1",
