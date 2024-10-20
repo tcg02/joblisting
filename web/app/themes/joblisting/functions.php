@@ -25,6 +25,7 @@ foreach (glob(get_template_directory() . '/app/*.php') as $file) { require_once(
 foreach (glob(get_template_directory() . '/app/models/*.php') as $file) { require_once($file); }
 foreach (glob(get_template_directory() . '/app/rest-controllers/*.php') as $file) { require_once($file); }
 foreach (glob(get_template_directory() . '/app/controllers/*.php') as $file) { require_once($file); }
+foreach (glob(get_template_directory() . '/app/helpers/*.php') as $file) { require_once($file); }
 
 /**
  * Pass a properly escaped array as a vue prop
@@ -33,3 +34,34 @@ function json_vue_prop($value) {
     $value = json_encode($value);
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', true);
 }
+
+function handle_create_job_post_submission() {   
+   
+    if (!isset($_POST['create_job_post_nonce']) || 
+        !wp_verify_nonce($_POST['create_job_post_nonce'], 'create_job_post_action')) {
+        wp_die('Nonce verification failed.');
+    } 
+    $controller = new Controllers\JobPostController();
+    $result = $controller->create();
+
+    if (isset($result['error'])) {        
+        wp_redirect(home_url('/error-page'));
+        exit;
+    } else {
+        wp_redirect(home_url('/'));
+        exit;
+    }
+}
+
+
+add_action('admin_post_nopriv_create_job_post', 'handle_create_job_post_submission');
+add_action('admin_post_create_job_post', 'handle_create_job_post_submission');
+
+
+add_action('save_post', function($post_id, $post, $update) {  
+    if ($post->post_type === 'post') {
+        \Helpers\CachingHelper::deleteAllJobPostCache();
+    }
+}, 10, 3);
+ 
+

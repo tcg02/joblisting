@@ -3150,4 +3150,31 @@ input, select, a, .transition,
   background: #662d91;
 }
 
+.sortjob-dropdown .select-container {
+    position: relative;
+    display: inline-block;
+    width: auto;
+}
 
+.sortjob-dropdown select {
+    padding: 5px 30px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+.sortjob-dropdown .select-container i.fa {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+ 
+.sortjob-dropdown select:hover {
+    border-color: #888;  
+}

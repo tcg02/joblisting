@@ -13,7 +13,7 @@ mix
     },
     devtool: 'inline-source-map'
 })
-.setResourceRoot( '/app/themes/joblisting/dist' )
+.setResourceRoot( '/joblisting/web/app/themes/joblisting/dist' )
 .setPublicPath('dist')
 .vue()
 .sourceMaps();

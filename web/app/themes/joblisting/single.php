@@ -1,18 +1,17 @@
-
 <?php 
-
-	$controller = new Controllers\JobPostController();
-	$view_data = $controller->show();
-
-	get_header();
+    $controller = new Controllers\JobPostController(get_the_ID());
+    $view_data = $controller->show();
+    //error_log(print_r($view_data,true));
+    get_header();
 ?>
 
 <section class="job-bg page job-details-page">
     <div class="container">
         <div class="breadcrumb-section">
+            <!-- breadcrumb -->
             <ol class="breadcrumb">
                 <li><a href="<?= get_home_url(); ?>">Home</a></li>
-                <li><a href="#">Techinical</a></li>
+                <li><a href="#"><?= esc_html( $view_data['job_post']->category ); ?></a></li>
             </ol><!-- breadcrumb -->						
             <h2 class="title">
                 <?= esc_html( $view_data['job_post']->category ); ?>
@@ -23,7 +22,7 @@
             <form action="#">
                 <!-- category-change -->
                 <div class="dropdown category-dropdown">						
-                    <a data-toggle="dropdown" href="#"><span class="change-text">Job Category</span> <i class="fa fa-angle-down"></i></a>
+                    <a data-toggle="dropdown" href="#"><span class="change-text"><?= esc_html( $view_data['job_post']->category ?: 'Job Category' ); ?></span> <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu category-change">
                         <li><a href="#">Customer Service</a></li>
                         <li><a href="#">Software Engineer</a></li>
@@ -35,7 +34,7 @@
                 
                 <!-- language-dropdown -->
                 <div class="dropdown category-dropdown language-dropdown">
-                    <a data-toggle="dropdown" href="#"><span class="change-text">Job Location</span> <i class="fa fa-angle-down"></i></a>
+                    <a data-toggle="dropdown" href="#"><span class="change-text"><?= esc_html( $view_data['job_post']->location ?: 'Job Location' ); ?></span> <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu category-change language-change">
                         <li><a href="#">Location 1</a></li>
                         <li><a href="#">Location 2</a></li>
@@ -43,7 +42,7 @@
                     </ul>								
                 </div><!-- language-dropdown -->
             
-                <input type="text" class="form-control" placeholder="Type your key word">
+                <input type="text" class="form-control" placeholder="Type your keyword">
                 <button type="submit" class="btn btn-primary" value="Search">Search</button>
             </form>
         </div><!-- banner-form -->
@@ -51,11 +50,15 @@
         <div class="job-details">
             <div class="section job-ad-item">
                 <div class="item-info">
+                    <?php
+                    $img = get_the_post_thumbnail($view_data['job_post']->id,'thumbnail');
+                    if(!empty($img)):?>
                     <div class="item-image-box">
                         <div class="item-image">
-                            <img src="images/job/4.png" alt="Image" class="img-responsive">
+                            <?php echo $img;?>
                         </div><!-- item-image -->
                     </div>
+                    <?php endif;?>
 
                     <div class="ad-info">
                         <span><?= esc_html( $view_data['job_post']->title ); ?></span>
@@ -63,7 +66,7 @@
                             <ul>
                                 <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i><?= esc_html( $view_data['job_post']->location ); ?></a></li>
                                 <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i><?= esc_html( $view_data['job_post']->employment_type ); ?></a></li>
-                                <li><i class="fa fa-money" aria-hidden="true"></i>$<?= esc_html( number_format( $view_data['job_post']->salary, 2 ) ); ?></li>
+                                <li><i class="fa fa-money" aria-hidden="true"></i>$<?= esc_html( number_format( $view_data['job_post']->salary?:0.00, 2 ) ); ?></li>
                                 <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i><?= esc_html( $view_data['job_post']->experience_level ); ?></a></li>
                             </ul>
                         </div><!-- ad-meta -->									
@@ -83,8 +86,7 @@
                         <div class="section job-description">
                             <div class="description-info">
                                 <h1>Description</h1>
-                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni।</p>
+                                <p><?php the_content($view_data['job_post']->id ); ?></p>
                             </div>						
                         </div>							
                     </div>
@@ -92,13 +94,13 @@
                         <div class="section job-short-info">
                             <h1>Short Info</h1>
                             <ul>
-                                <li><span class="icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Posted: ______________</li>
+                                <li><span class="icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Posted: <?= esc_html( date('F j, Y', $view_data['job_post']->published_date) ); ?></li>
                             </ul>
                         </div>
                         <div class="section company-info">
                             <h1>Company Info</h1>
                             <ul>
-                                <li>Compnay Name: <a href="#">______________</a></li>
+                                <li>Company Name: <a href="#"><?= esc_html( $view_data['job_post']->company ?: 'Not Available' ); ?></a></li>
                             </ul>								
                         </div>
                     </div>

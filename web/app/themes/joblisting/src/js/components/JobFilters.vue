@@ -20,24 +20,17 @@
                         <div class="panel-body">
                             <h5><a href="categories-main.html"><i class="fa fa-caret-down"></i> All Categories</a></h5>
                             <a href="#"><i class="icofont icofont-man-in-glasses"></i>Engineer/Architects</a>
-                            <ul>
-                                <li><a href="#">Software <span>(129)</span></a></li>
-                                <li><a href="#">Architecture <span>(8342)</span></a></li>
-                                <li><a href="#">UI & UX Designer <span>(782)</span></a></li>
-                                <li><a href="#">Telecommunication <span>(5247)</span></a></li>
-                                <li><a href="#">Civil Engineer <span>(634)</span></a></li>
-                                <li><a href="#">Chemical Engineer <span>(453)</span></a></li>
-                                <li><a href="#">Program Development <span>(7986)</span></a></li>
-                                <li><a href="#">Mechanical Engineer <span>(742)</span></a></li>
-                                <li><a href="#">Industrial Engineer <span>(149)</span></a></li>
+                            <ul> 
+                                <li v-for="(category, index) in categories.slice(0, 10)" :key="category.id" @click="applyFilter('category', category.slug)">
+                                    <a href="#">{{ category.name }} <span>({{ category.count }})</span></a>
+                                </li>
                             </ul>
                             <div class="see-more">
                                 <button type="button" class="show-more one"><i class="fa fa-plus-square-o" aria-hidden="true"></i>See More</button>
-                                <ul class="more-category one">
-                                    <li><a href="#">Fron end developer<span>(289)</span></a></li>
-                                    <li><a href="#">Back end developer<span>(5402)</span></a></li>
-                                    <li><a href="#">IT Department Manager<span>(3829)</span></a></li>
-                                    <li><a href="#">QA Department Manager<span>(352)</span></a></li>
+                                <ul  class="more-category one"> 
+                                    <li v-for="(category, index) in categories.slice(10)" :key="category.id" @click="applyFilter('category', category.slug)">
+                                        <a href="#">{{ category.name }} <span>({{ category.count }})</span></a>
+                                    </li>
                                 </ul>
                             </div>
 
@@ -59,9 +52,17 @@
                     <div id="accordion-two" class="panel-collapse collapse">
                         <!-- panel-body -->
                         <div class="panel-body">
-                            <label for="today"><input type="checkbox" name="today" id="today"> Today</label>
-                            <label for="7-days"><input type="checkbox" name="7-days" id="7-days"> 7 days</label>
-                            <label for="30-days"><input type="checkbox" name="30-days" id="30-days"> 30 days</label>
+                            <ul>
+                                <li @click="applyFilter('date_posted', 'today')">
+                                    <input name="dateposted" type="radio" value="Today"> Today
+                                </li>
+                                <li @click="applyFilter('date_posted', '7days')">
+                                    <input name="dateposted" type="radio" value="7 days"> 7 days
+                                </li>
+                                <li @click="applyFilter('date_posted', '30days')">
+                                    <input name="dateposted" type="radio" value="30 days"> 30 days
+                                </li>
+                            </ul>
                         </div><!-- panel-body -->
                     </div>
                 </div><!-- panel -->
@@ -117,11 +118,11 @@
                     <div id="accordion-four" class="panel-collapse collapse">
                         <!-- panel-body -->
                         <div class="panel-body">
-                            <label for="full-time"><input type="checkbox" name="full-time" id="full-time"> Full Time</label>
-                            <label for="part-time"><input type="checkbox" name="part-time" id="part-time"> Part Time</label>
-                            <label for="contractor"><input type="checkbox" name="contractor" id="contractor"> Contractor</label>
-                            <label for="intern"><input type="checkbox" name="intern" id="intern"> Intern</label>
-                            <label for="seasonal"><input type="checkbox" name="seasonal" id="seasonal"> Seasonal / Temp</label>
+                            <ul>
+                                <li v-for="type in employmentTypes" :key="type" @click="toggleEmploymentType(type)">
+                                    <input type="checkbox" :value="type" :checked="isCheckedEmployment(type)"> {{ type }}
+                                </li>
+                            </ul>
                         </div><!-- panel-body -->
                     </div>
                 </div><!-- panel -->
@@ -140,10 +141,13 @@
                     <div id="accordion-five" class="panel-collapse collapse">
                         <!-- panel-body -->
                         <div class="panel-body">
-                            <label for="training"><input type="checkbox" name="training" id="training"> Training</label>
-                            <label for="entry-level"><input type="checkbox" name="entry-level" id="entry-level"> Entry Level</label>
-                            <label for="mid-senior"><input type="checkbox" name="mid-senior" id="mid-senior"> Mid-Senior Level</label>
-                            <label for="top-level"><input type="checkbox" name="top-level" id="top-level"> Top Level</label>
+                            <ul>
+                                <li v-for="level in experienceLevels" :key="level" @click="toggleExperienceLevel(level)" >
+                                    <label>
+                                        <input type="checkbox" :value="level" :checked="isCheckedExperience(level)">{{ level }}
+                                    </label>
+                                </li>
+                            </ul>
                         </div><!-- panel-body -->
                     </div>
                 </div> <!-- panel -->
@@ -218,3 +222,96 @@
         </div>
     </div><!-- accordion-->
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            selectedFilters: {
+                category: '',
+                date_posted: '',
+                employment_type: [],
+                experience_level: [],
+            },
+            employmentTypes: ['Full Time', 'Part Time', 'Contractor', 'Intern', 'Seasonal / Temp'],
+            experienceLevels: ['Training', 'Entry Level', 'Mid-Senior Level', 'Top Level'], 
+            categories: [],
+        };
+    },
+    created() {
+        this.fetchCategories();
+    },
+    methods: {      
+        fetchCategories() {
+            $.ajax({
+                url: localized.resturl + '../../../wp/v2/categories?per_page=100&orderby=count&order=desc',   
+                method: 'GET',
+                success: (result) => {
+                    this.categories = this.organizeCategories(result);
+                },
+                error: function() {
+                    alert('Error fetching categories');
+                }
+            });
+        },
+
+        organizeCategories(categories) {
+            const categoryMap = {};
+            const organizedCategories = [];
+
+            categories.forEach(category => {
+                if (category.parent === 0) {
+                    categoryMap[category.id] = { ...category, children: [] };
+                    organizedCategories.push(categoryMap[category.id]);
+                } else {
+                    if (categoryMap[category.parent]) {
+                        categoryMap[category.parent].children.push(category);
+                    }
+                }
+            });
+
+            return organizedCategories;
+        },
+
+        isCheckedEmployment(type) {
+            return this.selectedFilters.employment_type.includes(type);
+        },
+        isCheckedExperience(level) {
+            return this.selectedFilters.experience_level.includes(level);
+        },
+
+        toggleEmploymentType(type) {
+            const index = this.selectedFilters.employment_type.indexOf(type);
+            if (index === -1) {
+               
+                this.selectedFilters.employment_type.push(type);
+            } else {
+                
+                this.selectedFilters.employment_type.splice(index, 1);
+            }
+             
+            this.$emit('filter-changed', this.selectedFilters);
+        },
+
+        toggleExperienceLevel(level) {
+            const index = this.selectedFilters.experience_level.indexOf(level);
+            if (index === -1) {
+               
+                this.selectedFilters.experience_level.push(level);
+            } else {
+                 
+                this.selectedFilters.experience_level.splice(index, 1);
+            }
+             
+            this.$emit('filter-changed', this.selectedFilters);
+        },
+
+        
+        applyFilter(filterType, filterValue) {            
+            this.selectedFilters[filterType] = filterValue;            
+            this.$emit('filter-changed', this.selectedFilters); 
+        }
+    }
+};
+</script>
+

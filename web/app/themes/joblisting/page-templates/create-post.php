@@ -10,6 +10,7 @@ $controller = new Controllers\JobPostController();
 $view_data = $controller->create();
 
 get_header();
+
 ?>
 
 <section class="job-bg ad-details-page">
@@ -24,26 +25,29 @@ get_header();
         </div><!-- banner -->
 
         <div class="job-postdetails">
+        
             <div class="row">	
                 <div class="col-md-8">
-                <form action="#" method="POST">
+                <form id="create-job-form" action="<?= esc_url( admin_url('admin-post.php') ); ?>" method="POST">
+                <?php wp_nonce_field('create_job_post_action', 'create_job_post_nonce'); ?>
+                <input type="hidden" name="action" value="create_job_post">
                         <fieldset>
                             <div class="section postdetails">
                                 <h4>Post Your Job<span class="pull-right">* Mandatory Fields</span></h4>
-
+                                <!-- Error message container -->
+                                <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+                                
                                 <!-- Job Category -->
                                 <div class="row form-group add-title">
                                     <label class="col-sm-3 label-title">Job Category</label>
                                     <div class="col-sm-9">
-                                        <div class="dropdown category-dropdown">
-                                            <a data-toggle="dropdown" href="#" aria-expanded="false"><span class="change-text">Select a category</span> <i class="fa fa-angle-down pull-right"></i></a>
-                                            <ul class="dropdown-menu category-change">
-                                                <li><a href="#">Software Engineer</a></li>
-                                                <li><a href="#">Program Development</a></li>
-                                                <li><a href="#">Project Manager</a></li>
-                                                <li><a href="#">Graphics Designer</a></li>
-                                            </ul>                                
-                                        </div>
+                                        <select name="job_category" class="form-control" required>
+                                            <option value="">Select a category</option>
+                                            <option value="Software Engineer">Software Engineer</option>
+                                            <option value="Program Development">Program Development</option>
+                                            <option value="Project Manager">Project Manager</option>
+                                            <option value="Graphics Designer">Graphics Designer</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -78,23 +82,25 @@ get_header();
                                 <div class="row form-group add-title location">
                                     <label class="col-sm-3 label-title">Location<span class="required">*</span></label>
                                     <div class="col-sm-9">
-                                        <div class="dropdown category-dropdown pull-left">
-                                            <a data-toggle="dropdown" href="#" aria-expanded="false"><span class="change-text">Country</span> <i class="fa fa-angle-down pull-right"></i></a>
-                                            <ul class="dropdown-menu category-change">
-                                                <li><a href="#">United States</a></li>
-                                                <li><a href="#">United Kingdom</a></li>
-                                                <li><a href="#">Germany</a></li>
-                                                <li><a href="#">Australia</a></li>
-                                                <li><a href="#">Brazil</a></li>
-                                            </ul>                                
+                                        <!-- Country Dropdown -->
+                                        <div class="col-sm-6">
+                                            <select name="country" class="form-control" required>
+                                                <option value="">Select a country</option>
+                                                <option value="United States">United States</option>
+                                                <option value="United Kingdom">United Kingdom</option>
+                                                <option value="Germany">Germany</option>
+                                                <option value="Australia">Australia</option>
+                                                <option value="Brazil">Brazil</option>
+                                            </select>
                                         </div>
-                                        <div class="dropdown category-dropdown pull-right">
-                                            <a data-toggle="dropdown" href="#" aria-expanded="false"><span class="change-text">State</span> <i class="fa fa-angle-down pull-right"></i></a>
-                                            <ul class="dropdown-menu category-change">
-                                                <li><a href="#">California</a></li>
-                                                <li><a href="#">New York</a></li>
-                                                <li><a href="#">Texas</a></li>
-                                            </ul>                                
+                                        <!-- State Dropdown -->
+                                        <div class="col-sm-6">
+                                            <select name="state" class="form-control" required>
+                                                <option value="">Select a state</option>
+                                                <option value="California">California</option>
+                                                <option value="New York">New York</option>
+                                                <option value="Texas">Texas</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -116,15 +122,12 @@ get_header();
                                 <div class="row form-group add-title">
                                     <label class="col-sm-3 label-title">Salary Type<span class="required">*</span></label>
                                     <div class="col-sm-9">
-                                        <div class="dropdown category-dropdown">
-                                            <a data-toggle="dropdown" href="#" aria-expanded="false"><span class="change-text">Per Hour</span> <i class="fa fa-angle-down pull-right"></i></a>
-                                            <ul class="dropdown-menu category-change">
-                                                <li><a href="#">Per Hour</a></li>
-                                                <li><a href="#">Daily</a></li>
-                                                <li><a href="#">Monthly</a></li>
-                                                <li><a href="#">Yearly</a></li>
-                                            </ul>                                
-                                        </div>
+                                        <select name="salary_type" class="form-control" required>
+                                            <option value="Per Hour">Per Hour</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Monthly">Monthly</option>
+                                            <option value="Yearly">Yearly</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -132,22 +135,20 @@ get_header();
                                 <div class="row form-group add-title">
                                     <label class="col-sm-3 label-title">Experience<span class="required">*</span></label>
                                     <div class="col-sm-9">
-                                        <div class="dropdown category-dropdown">
-                                            <a data-toggle="dropdown" href="#" aria-expanded="false"><span class="change-text">Mid Level</span> <i class="fa fa-angle-down pull-right"></i></a>
-                                            <ul class="dropdown-menu category-change">
-                                                <li><a href="#">Entry Level</a></li>
-                                                <li><a href="#">Mid Level</a></li>
-                                                <li><a href="#">Mid-Senior Level</a></li>
-                                                <li><a href="#">Top Level</a></li>
-                                            </ul>                                
-                                        </div>
+                                        <select name="experience_level" class="form-control" required>
+                                            <option value="">Select experience level</option>
+                                            <option value="Entry Level">Entry Level</option>
+                                            <option value="Mid Level">Mid Level</option>
+                                            <option value="Mid-Senior Level">Mid-Senior Level</option>
+                                            <option value="Top Level">Top Level</option>
+                                        </select>
                                     </div>
-                                </div>    
+                                </div>
 
                                 <!-- Agreement -->
                                 <div class="checkbox section agreement">
-                                    <label for="send">
-                                        <input type="checkbox" name="send" id="send" required>
+                                    <label for="agreement">
+                                        <input type="checkbox" name="agreement" id="agreement" >
                                         You agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a> and acknowledge that you are the rightful owner of this item and using Jobs to find a genuine buyer.
                                     </label>
                                     <button type="submit" class="btn btn-primary">Post Your Job</button>
@@ -175,5 +176,70 @@ get_header();
         </div><!-- job-postdetails -->
     </div><!-- container -->
 </section><!-- main -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('create-job-form');
+    const errorMessage = document.getElementById('error-message');
+
+    form.addEventListener('submit', function (event) {
+        
+        errorMessage.style.display = 'none';
+        errorMessage.innerHTML = '';
+ 
+        const jobCategory = form['job_category'].value;
+        const employmentType = form.querySelector('input[name="employment_type"]:checked');
+        const jobTitle = form['job_title'].value;
+        const jobDescription = form['job_description'].value;
+        const country = form['country'].value;
+        const state = form['state'].value;
+        const salaryMin = form['salary_min'].value;
+        const salaryMax = form['salary_max'].value;
+        const salaryType = form['salary_type'].value;
+        const experienceLevel = form['experience_level'].value;
+        const agreement = document.getElementById('agreement');
+
+        let errors = [];
+ 
+        if (!jobCategory) {
+            errors.push("Please select a job category.");
+        }
+        if (!employmentType) {
+            errors.push("Please select a job type.");
+        }
+        if (!jobTitle) {
+            errors.push("Please enter a job title.");
+        }
+        if (!jobDescription) {
+            errors.push("Please enter a job description.");
+        }
+        if (!country) {
+            errors.push("Please select a country.");
+        }
+        if (!state) {
+            errors.push("Please select a state.");
+        }
+        if (!salaryMin || !salaryMax) {
+            errors.push("Please enter a valid salary range.");
+        }
+        if (!salaryType) {
+            errors.push("Please select a salary type.");
+        }
+        if (!experienceLevel) {
+            errors.push("Please select an experience level.");
+        }
+        if (!agreement.checked) {            
+            errors.push('You must agree to the Terms of Use and Privacy Policy.');
+        }
+ 
+        if (errors.length > 0) {
+            event.preventDefault();  // Prevent form submission
+            errorMessage.style.display = 'block';
+            errorMessage.innerHTML = errors.join('<br>'); // Show error messages
+        }
+    });
+});
+
+</script>
+
 
 <?php get_footer(); ?>

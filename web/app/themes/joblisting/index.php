@@ -3,6 +3,8 @@
 	$controller = new Controllers\JobPostController();
 	$view_data = $controller->index();
 
+	//error_log(print_r($view_data,true),3,'c:/xampp_server/htdocs/joblisting/_a.log');
+
 	get_header();
 ?>
 

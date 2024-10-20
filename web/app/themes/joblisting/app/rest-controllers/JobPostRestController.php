@@ -71,13 +71,13 @@ class JobPostRestController extends WP_REST_Controller {
      * @param WP_REST_Request $request Current request.
      */
     public function get_job_posts( $request ) {
-        $filters = $request['filters'];
+        $filters = isset($request['filters']) ? $request['filters'] : [];
 
         $job_posts = JobPost::getResults($filters);
 
         return [
-            'success' => !empty($job_posts ? true : false), 
-            'message' => ($success ? 'Job Posts retrieved':'Job Posts could not be retrieved'),
+            'success' => !empty($job_posts), 
+            'message' => (!empty($success) ? 'Job Posts retrieved':'Job Posts could not be retrieved'),
             'data'    => $job_posts
         ];
     }
